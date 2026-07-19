@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>消防点位逐项检查打卡</title>
+    <title>消防点位逐项检查</title>
     <style>
         * {
             margin: 0;
@@ -13,21 +13,21 @@
         }
         body {
             background-color: #f3f4f6;
-            padding: 40px 20px;
+            padding: 20px 16px;
             max-width: 720px;
             margin: 0 auto;
         }
         .container {
             background: #ffffff;
             border-radius: 18px;
-            padding: 32px;
+            padding: 24px 20px;
             box-shadow: 0 4px 24px rgba(0,0,0,0.07);
         }
         h1 {
             text-align: center;
             color: #1f2937;
-            font-size: 26px;
-            margin-bottom: 26px;
+            font-size: 22px;
+            margin-bottom: 24px;
         }
         .stat-wrap {
             display: grid;
@@ -36,28 +36,28 @@
             background: #eff6ff;
             border-radius: 14px;
             padding: 20px 12px;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             text-align: center;
         }
         .stat-num {
-            font-size: 34px;
+            font-size: 32px;
             font-weight: 700;
             color: #2563eb;
         }
         .stat-desc {
             font-size: 14px;
             color: #4b5563;
-            margin-top: 6px;
+            margin-top: 4px;
         }
         .task-card {
             background: #f9fafb;
             border-radius: 14px;
-            padding: 30px 24px;
-            min-height: 160px;
+            padding: 24px 20px;
+            min-height: 150px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
         .task-label {
             font-size: 15px;
@@ -66,28 +66,31 @@
         }
         .name-edit-wrap {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
             margin-bottom: 12px;
+            width: 100%;
         }
         #posNameInput {
             flex: 1;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
             color: #111827;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
-            padding: 8px 12px;
+            padding: 8px 10px;
             background: #fff;
+            min-width: 0;
         }
         .edit-btn {
-            white-space: nowrap;
-            padding: 7px 12px;
+            flex-shrink: 0;
+            padding: 7px 10px;
             border-radius: 8px;
             border: none;
             background: #2563eb;
             color: white;
             cursor: pointer;
+            font-size: 14px;
         }
         .check-times {
             font-size: 16px;
@@ -96,18 +99,14 @@
         }
         .btn-box {
             display: flex;
-            gap: 18px;
-            transition: flex-direction 0.25s ease;
-        }
-        .btn-box.swap {
-            flex-direction: row-reverse;
+            gap: 14px;
         }
         button {
             flex: 1;
-            padding: 18px;
+            padding: 16px;
             border-radius: 12px;
             border: none;
-            font-size: 18px;
+            font-size: 17px;
             cursor: pointer;
             transition: 0.2s;
         }
@@ -128,7 +127,7 @@
             color: #888;
             cursor: not-allowed;
         }
-        /* 弹窗样式 */
+        /* 居中弹窗 */
         .toast {
             position: fixed;
             left: 50%;
@@ -136,7 +135,7 @@
             transform: translate(-50%, -50%);
             background: rgba(0,0,0,0.75);
             color: #fff;
-            padding: 16px 32px;
+            padding: 14px 28px;
             border-radius: 12px;
             font-size: 18px;
             z-index: 9999;
@@ -162,7 +161,7 @@
             <div class="task-label">当前点位（可编辑）</div>
             <div class="name-edit-wrap">
                 <input type="text" id="posNameInput">
-                <button class="edit-btn" id="saveNameBtn">保存名称</button>
+                <button class="edit-btn" id="saveNameBtn">保存</button>
             </div>
             <div class="check-times" id="timesText"></div>
         </div>
@@ -242,7 +241,6 @@
         const timesTextEl = document.getElementById("timesText");
         const confirmBtn = document.getElementById("confirmBtn");
         const resetBtn = document.getElementById("resetBtn");
-        const btnBox = document.getElementById("btnBox");
         const toast = document.getElementById("toast");
 
         function init() {
@@ -289,7 +287,6 @@
             resetBtn.disabled = isLocked;
         }
 
-        // 弹出提示+锁定按钮1.5秒
         function showToastAndLock() {
             isLocked = true;
             toast.style.display = "block";
@@ -301,7 +298,6 @@
             }, 1500);
         }
 
-        // 保存修改点位名称
         saveNameBtn.addEventListener("click", () => {
             const newName = posNameInput.value.trim();
             if(!newName) return;
@@ -322,8 +318,7 @@
             }
             saveLocal();
             render();
-
-            btnBox.classList.toggle("swap");
+            // 已删除按钮互换翻转代码
             showToastAndLock();
         });
 
@@ -334,7 +329,6 @@
             finishTotal = 0;
             saveLocal();
             render();
-            btnBox.classList.remove("swap");
         });
 
         init();
